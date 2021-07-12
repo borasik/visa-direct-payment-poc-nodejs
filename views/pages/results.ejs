@@ -9,26 +9,13 @@
     <% include ../partials/header %>
   </header>
   <main class="main">
-    <div class="row">
-      <% entities.forEach(function(entity) { %>
-      <div class="col-lg-2 col-md-4 col-sm-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title"><%= entity.id %></h5>
-            <h6 class="card-subtitle mb-2 text-muted"><%= entity.description %></h6>
-            <p></p>
-            <p class="card-text">
-              <strong>Applicable entities:</strong>
-            </p>
-            <ul class="list-group list-group-flush">
-              <% entity.applicableEntities.forEach(function(detail) { %>
-              <li class="list-group-item"><%= detail %></li>
-              <% }); %>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <% }); %>
+    <div class="row">    
+        <select name="cars" id="cars">
+          <option id="0" selected>Please Choose Account</option>
+          <% items.forEach(function(item) { %>          
+          <option value="<%=item.number%>" id="<%=item.id%>"><%=item.number%> (<%=item.currency%>) (<%=item.accountContext%>)</option>
+          <% }); %>
+        </select>    
     </div>
   </main>
   <footer>

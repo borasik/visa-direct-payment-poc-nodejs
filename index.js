@@ -49,8 +49,8 @@ app.get('/callback', async (req, res, next) => {
   res.render('pages/auth', { token: access_token })
 })
 
-// Get results
-app.get('/results', async (req, res, next) => {
+// Get Retail US Accounts
+app.get('/retail-us-accounts', async (req, res, next) => {
   try {
     console.log("HEY");
     var url = config.baseUrl + '/retail-us/me/account/v1/accounts';
@@ -64,12 +64,44 @@ app.get('/results', async (req, res, next) => {
         'Content-Type': 'application/json'
       })
     })
-
+    console.log(response);
     if (!response.ok) {
       return res.render('pages/error', { error: response.statusText });
     }
         
     return res.render('pages/results', { entities: entities })
+  } catch (error) {
+    return res.render('pages/error', { error: error })
+  }
+})
+
+// Get Retail US Accounts
+app.get('/corporate-accounts', async (req, res, next) => {
+  try {
+    console.log("HEY");
+    var url = config.baseUrl + '/corporate/channels/accounts/me/v1/accounts?accountContext=MT103';
+    
+    console.log(url);
+    const response = await fetch(url, {
+      method: 'get',
+      headers: new Headers({
+        Authorization: 'Bearer ' + access_token,
+        'Accept': '*/*',
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection': 'keep-alive'
+      })
+    });
+
+    if (!response.ok) {
+      return res.render('pages/error', { error: response.statusText });
+    }
+    
+    const items = await response.json()
+    console.log("items", items.items);
+
+    return res.render('pages/results', { items: items.items})
+
   } catch (error) {
     return res.render('pages/error', { error: error })
   }
